@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 project(lxqt-session)
 
 option(UPDATE_TRANSLATIONS "Update source translation translations/*.ts files" OFF)
+option(WITH_LIBUDEV_MONITOR "Use libudev to monitor spawning of input devices in lxqt-session" ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
