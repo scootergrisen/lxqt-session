@@ -319,7 +319,25 @@ void LXQtModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitSt
 LXQtModuleManager::~LXQtModuleManager()
 {
     qApp->removeNativeEventFilter(this);
-    qDeleteAll(mNameMap);
+
+    // We disconnect a process before deleting it. We need this to prevent
+    // a crash that results from a state change signal being emmited while
+    // deleting a crashing module.
+    // If the module is still connect restartModules will be called with a
+    // invalid sender.
+
+    ModulesMapIterator i(mNameMap);
+    while (i.hasNext())
+    {
+        i.next();
+
+        auto p = i.value();
+        p->disconnect();
+
+        delete p;
+        p = 0;
+    }
+
     delete mWmProcess;
 }
 
